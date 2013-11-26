@@ -1,7 +1,7 @@
-git_bin
+My git bin dir
 =======
 
-some helper script for misc things
+Just some helper script for misc things...
 
 ```
 echo '' >> ~/.bashrc
