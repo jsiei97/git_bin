@@ -2,7 +2,7 @@
 
 # sudo apt-get install exuberant-ctags cscope
 
-#This script will create 
+#This script will create
 # - cscope.files
 # - cscope.out
 # - tags
@@ -34,8 +34,12 @@ echo "Let's tag this dir: $cwd"
 echo "Let's do a file list (cscope.files)"
 
 #.c .h .s .cpp .cxx .cc .java
-find -H -type f -iname '*.[chs]' -or -iname '*.cpp' -or \
-    -iname '*.cxx' -or -iname '*.cc' -or -iname '*.java' \
+find -H \
+    -type f -iname '*.[chs]' -or \
+    -type f -iname '*.cpp' -or \
+    -type f -iname '*.cxx' -or \
+    -type f -iname '*.cc' -or \
+    -type f -iname '*.java' \
     | grep -v \.svn > cscope.files
 
 echo "Let's run ctags on this list"
@@ -43,17 +47,25 @@ ctags -R --c-kinds=+p --fields=+S -L cscope.files
 
 echo "Let's add some more files for just cscope"
 
-find -H -type f \
-    -iname 'Makefile' -or -iname 'Makefile.*' -or -iname '*.make' -or \
-    -iname '*.mk' -or -iname '*.mak' -or \
-    -iname '*.pro' -or -iname '*.pri' -or \
-    -iname '*.cfg' -or -iname '*.conf' -or \
-    -iname '*.xml' -or -iname '*.xsd' -or \
-    -iname '*.sh' -or -iname '*.bsh' -or -iname '*.pl' \
+find -H \
+    -type f -iname 'Makefile' -or \
+    -type f -iname 'Makefile.*' -or \
+    -type f -iname '*.make' -or \
+    -type f -iname '*.mk' -or \
+    -type f -iname '*.mak' -or \
+    -type f -iname '*.pro' -or \
+    -type f -iname '*.pri' -or \
+    -type f -iname '*.cfg' -or \
+    -type f -iname '*.conf' -or \
+    -type f -iname '*.xml' -or \
+    -type f -iname '*.xsd' -or \
+    -type f -iname '*.sh' -or \
+    -type f -iname '*.bsh' -or \
+    -type f -iname '*.pl' \
     | grep -v \.svn  >> cscope.files
 
 echo "and cscope..."
-cscope -b   
+cscope -b
 
 stop=`date +"%s"`
 declare -i used
