@@ -39,6 +39,7 @@ find -H \
     -type f -iname '*.cpp' -or \
     -type f -iname '*.cxx' -or \
     -type f -iname '*.cc' -or \
+    -type f -iname '*.ino' -or \
     -type f -iname '*.java' \
     | grep -v \.svn > cscope.files
 
