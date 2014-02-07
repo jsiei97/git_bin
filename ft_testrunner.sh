@@ -1,5 +1,7 @@
 #!/bin/bash
 
+gcovr=~/gcovr/scripts/gcovr
+
 if [ ! -d test/ ]
 then
     echo "PWD $PWD"
@@ -30,7 +32,20 @@ do
     ./$name -xunitxml -o $base/xUnit_report_$name.xml || exit 64
     valgrind --xml=yes --xml-file=$base/valgrind_report_$name.xml --leak-check=full ./$name || exit 65
 
-    make distclean
+    make distclean || exit 66
+
+    if [ -f $gcovr ]
+    then
+        qmake LIBS+="-lgcov" \
+            QMAKE_CXXFLAGS+="-g -Wall -fprofile-arcs -ftest-coverage" \
+            QMAKE_LDFLAGS+="-g -Wall -fprofile-arcs" || exit 70
+        make || exit 71
+
+        $gcovr --exclude=.*/test/.* --exclude=.*/include/qt.* \
+            --xml --output=$base/gcov_report_$name.xml || exit 73
+        make distclean || exit 74
+    fi
+
     popd
 done
 
