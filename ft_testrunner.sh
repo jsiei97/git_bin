@@ -28,6 +28,8 @@ do
     fi
 
     ./$name -xunitxml -o $base/xUnit_report_$name.xml || exit 64
+    valgrind --xml=yes --xml-file=$base/valgrind_report_$name.xml --leak-check=full ./$name || exit 65
+
     make distclean
     popd
 done
