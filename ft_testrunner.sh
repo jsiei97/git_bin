@@ -1,6 +1,7 @@
 #!/bin/bash
 
 gcovr=~/gcovr/scripts/gcovr
+JOBS="-j$((`getconf _NPROCESSORS_ONLN` + 1))"
 
 if [ ! -d test/ ]
 then
@@ -21,7 +22,7 @@ do
     pushd $dir || exit 60
     echo $name
     qmake || exit 61
-    make || exit 62
+    make $JOBS || exit 62
     if [ ! -f $name ]
     then
         echo "Build error:"
@@ -39,7 +40,7 @@ do
         qmake LIBS+="-lgcov" \
             QMAKE_CXXFLAGS+="-g -Wall -fprofile-arcs -ftest-coverage" \
             QMAKE_LDFLAGS+="-g -Wall -fprofile-arcs" || exit 70
-        make || exit 71
+        make $JOBS || exit 71
 
         $gcovr --exclude=.*/test/.* --exclude=.*/include/qt.* \
             --xml --output=$base/gcov_report_$name.xml || exit 73
