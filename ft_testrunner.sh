@@ -44,7 +44,7 @@ do
         make $JOBS || exit 71
 
         ./$name || exit 72
-        $gcovr --exclude=.*/test/.* --exclude=.*/include/qt.* \
+        $gcovr --exclude=.*/test/.* --exclude=.*/include/qt.* --exclude=/usr/include/.* \
             --xml --output=$base/gcov_report_$name.xml || exit 73
         make distclean || exit 74
     fi
