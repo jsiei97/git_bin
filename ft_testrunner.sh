@@ -38,10 +38,12 @@ do
     if [ -f $gcovr ]
     then
         qmake LIBS+="-lgcov" \
-            QMAKE_CXXFLAGS+="-g -Wall -fprofile-arcs -ftest-coverage" \
+            QMAKE_CFLAGS+="-O0 -g" \
+            QMAKE_CXXFLAGS+="-O0 -g -fprofile-arcs -ftest-coverage" \
             QMAKE_LDFLAGS+="-g -Wall -fprofile-arcs" || exit 70
         make $JOBS || exit 71
 
+        ./$name || exit 72
         $gcovr --exclude=.*/test/.* --exclude=.*/include/qt.* \
             --xml --output=$base/gcov_report_$name.xml || exit 73
         make distclean || exit 74
