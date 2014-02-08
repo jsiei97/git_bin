@@ -34,7 +34,7 @@ do
     for s in $src
     do
         #But will this work for files not in this test dir?
-        to=$(echo $dir'/'$s | sed 's/\//\\\//g')
+        to=$(echo $dir'/'$s | sed 's/^.\///g' | sed 's/\//\\\//g')
         echo "PATH: $s -> $to"
         sed -i 's/^'$s'/'$to'/g' $gccOut || exit 64
     done
