@@ -1,5 +1,23 @@
 #!/bin/bash
 
+#
+# http://aplawrence.com/Unix/getopts.html
+#
+args=`getopt cb $*`
+if test $? != 0
+then
+    echo 'Usage: -c (cleanup) -d dir'
+    exit 1
+fi
+set -- $args
+for i
+do
+    case "$i" in
+        -c) shift;echo "cleanup ... ";rm -rf doxygen*; exit 0;;
+        -b) shift;generatepdf="true";;
+    esac
+done
+
 dox=Doxyfile 
 
 if [ ! -f $dox ]
@@ -29,6 +47,14 @@ fi
 mkdir -p doxygen || exit 3
 
 doxygen || exit 10
+
+if [ "$generatepdf" = "true" ]
+then
+    pdf="doxygen.$(basename $PWD).pdf"
+    pushd doxygen/latex || exit 20
+    make || exit 21
+    cp refman.pdf "../../$pdf" || exit 22
+fi
 
 echo "Done..."
 exit 0
