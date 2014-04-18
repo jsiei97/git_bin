@@ -1,9 +1,16 @@
 #!/bin/bash
 
-str="-type d -iname backup -prune -or -type d -iname backup -prune"
+# Ignore dirs with names like:
+ignore="backup old"
 
-#Check and update svn
-for d in `find $str -or -iname .svn -print`
+# Fix the "find string"
+for ig in $ignore
+do
+    str=$str" -type d -iname $ig -prune -or"
+done
+
+# Check and update subversion dirs
+for d in `find $str -iname .svn -print`
 do
     dir=$(dirname $d)
     #echo $dir
@@ -15,8 +22,8 @@ do
     echo
 done
 
-#Then check git dirs
-for d in `find $str -or -iname .git -print`
+# Check git dirs
+for d in `find $str -iname .git -print`
 do
     dir=$(dirname $d)
     #echo $dir
