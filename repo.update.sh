@@ -1,29 +1,40 @@
 #!/bin/bash
 
-#todo: add a better ignore list
+# Ignore dirs with names like:
+ignore="backup old"
 
-#Check and update svn
-for d in `find -type d -iname .svn | grep -v backup`
+# Fix the "find string"
+for ig in $ignore
+do
+    str=$str" -type d -iname $ig -prune -or"
+done
+
+# Check git dirs
+for d in `find $str -iname .git -print`
 do
     dir=$(dirname $d)
-    echo $dir
+    #echo $dir
+
+    pushd $dir        || exit 20
+    git remote update || exit 22
+    git status -s     || exit 24
+    popd > /dev/null
+    echo
+done
+
+# Check and update subversion dirs
+for d in `find $str -iname .svn -print`
+do
+    dir=$(dirname $d)
+    #echo $dir
 
     pushd $dir || exit 10
     svn update || exit 12
     svn status || exit 14
-    popd
+    popd > /dev/null
     echo
 done
 
-#Then check git dirs
-for d in `find -type d -iname .git | grep -v backup`
-do
-    dir=$(dirname $d)
-    echo $dir
-
-    pushd $dir        || exit 20
-    git remote update || exit 22
-    git status -s     || 24
-    popd
-    echo
-done
+echo ""
+echo "Done..."
+exit 0
