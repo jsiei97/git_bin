@@ -10,7 +10,7 @@
 #
 # http://aplawrence.com/Unix/getopts.html
 #
-args=`getopt c $*`
+args=$(getopt c "$@")
 if test $? != 0
 then
     echo 'Usage: -c (cleanup) -d dir'
@@ -26,10 +26,9 @@ done
 
 
 
-start=`date +"%s"`
+start=$(date +"%s")
 
-cwd=`pwd`
-echo "Let's tag this dir: $cwd"
+echo "Let's tag this dir: $PWD"
 
 echo "Let's do a file list (cscope.files)"
 
@@ -68,7 +67,7 @@ find -H \
 echo "and cscope..."
 cscope -b
 
-stop=`date +"%s"`
+stop=$(date +"%s")
 declare -i used
 used=$stop-$start
 #echo "Time: $start $stop "
