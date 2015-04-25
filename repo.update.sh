@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Ignore dirs with names like:
-ignore="backup old"
+ignore="backup old mod"
 
 # Fix the "find string"
 for ig in $ignore
@@ -17,6 +17,7 @@ do
 
     pushd $dir        || exit 20
     git remote update || exit 22
+    #git pull         || exit 23
     git status -s     || exit 24
     popd > /dev/null
     echo
