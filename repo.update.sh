@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Ignore dirs with names like:
-ignore="backup old mod"
+ignore="backup old mod smb"
 
 # Fix the "find string"
 for ig in $ignore
