@@ -37,6 +37,8 @@ if [ -d .git ]; then
   echo "Type 'git log' for more commits, or 'git show' for full commit details."
 else
   echo "Not a git repository."
+  exit 10
 fi
 
 popd >/dev/null
+exit 0
