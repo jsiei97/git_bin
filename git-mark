@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Add a mark (as a tagg)
+git tag -a `date +'ver_%F'`
+
+# Then push with
+# git push --tags
+
