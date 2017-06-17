@@ -10,7 +10,17 @@
 ip_arg=$1
 do_arp=$2
 
-echo "Ping all $1"
+if [ -e $ip_arg ]
+then
+    echo "No args"
+    ip_arg=$(ifconfig | grep 'inet addr' | grep -v 127.0.0.1 |\
+        awk '{print $2}' |\
+        sed -r 's/addr:([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}).*/\1/g')
+
+    do_arp=1
+fi
+
+echo "Ping all $ip_arg"
 
 for ip in {1..255}
 do
@@ -27,6 +37,8 @@ wait
 
 if [ ! -z $do_arp ]
 then
+    echo ""
+    echo "ARP:"
     # Since we just ping:ed everyting on this subnet, the arp tables is now updated.
     # print all ip:s and names found in the arp table (sorted by ip)...
     arp -a |\
